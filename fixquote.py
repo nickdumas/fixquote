@@ -2,13 +2,18 @@
 
 from string import translate, maketrans
 
-def smartSanitize(s):
+BAD_CHARS = [('“', '"'),
+             ('”', '"'),
+             ("‘", "'"),
+             ("’", "'"),
+             ("–", "-")]
 
-    return s.replace("“",'"').replace("”", '"').replace(r"‘",r"'").replace(r"’",r"'").replace("–", "-")
+def smartSanitize(s, badChars=BAD_CHARS):
+    res = s
+    for bad,good in BAD_CHARS:
+        res = res.replace(bad, good)
 
-    #badChars = r'“”‘’–'.decode("utf-8")
-    #t = maketrans(badChars, r'""''-')
-    #return translate(s.decode("utf-8"), t)
+    return res
 
 if __name__ == "__main__":
     badString = r'“This is a demo quote, with emdash and various other bad characters. –‘Sub quote. ’”'
